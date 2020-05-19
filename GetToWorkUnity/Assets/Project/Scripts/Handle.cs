@@ -7,13 +7,13 @@ using Valve.VR.InteractionSystem;
 public class Handle: MonoBehaviour {
     private List<Hand> holdingHands = new List<Hand>();
     public Rigidbody steerRigidbody;
-    public GameObject fakeHand;
 
     [EnumFlags]
     public Hand.AttachmentFlags attachmentFlags = 0;
     public float attachForce;
     public float attachForceDamper;
     
+    public GameObject fakeHand;
 
     private void Start() {
         fakeHand.SetActive(false);
