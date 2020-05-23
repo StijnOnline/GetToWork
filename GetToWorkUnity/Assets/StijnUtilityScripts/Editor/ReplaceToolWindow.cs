@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.Threading.Tasks;
 
 public class ReplaceToolWindow : EditorWindow {
 
@@ -9,6 +10,7 @@ public class ReplaceToolWindow : EditorWindow {
     private Vector3 positionOffset = Vector3.zero;
     private Vector3 rotationOffset = Vector3.zero;
     private float scaleMultiplier = 1f;
+    private string responseText;
 
     [MenuItem("Window/Replace Selection")]
     static void Init() {
@@ -22,8 +24,11 @@ public class ReplaceToolWindow : EditorWindow {
         scaleMultiplier = EditorGUILayout.FloatField("Scale Multiplier", scaleMultiplier);
 
         if(GUILayout.Button("Replace Selection")) {
-            GUILayout.Label(Replace());
+            responseText = Replace();
+
+            ResetResponseText();
         }
+        GUILayout.Label(responseText);
     }
 
     string Replace() {
@@ -34,7 +39,13 @@ public class ReplaceToolWindow : EditorWindow {
 
         foreach(GameObject referenceObject in Selection.gameObjects) {
             //Create New
-            GameObject created = Instantiate(targetObject,referenceObject.transform.position + positionOffset,referenceObject.transform.rotation * Quaternion.Euler(rotationOffset));
+
+            Vector3 globalPostionOffset = Vector3.zero;
+            globalPostionOffset += referenceObject.transform.forward * positionOffset.z;
+            globalPostionOffset += referenceObject.transform.right * positionOffset.x;
+            globalPostionOffset += referenceObject.transform.up * positionOffset.y;
+
+            GameObject created = Instantiate(targetObject,referenceObject.transform.position + globalPostionOffset, referenceObject.transform.rotation * Quaternion.Euler(rotationOffset));
             created.transform.localScale *= scaleMultiplier;
             Undo.RegisterCreatedObjectUndo(created,"Created Replacement");
 
@@ -42,5 +53,10 @@ public class ReplaceToolWindow : EditorWindow {
         }
 
         return "Objects Replaced";
+    }
+
+    async void ResetResponseText() {
+        await Task.Delay(600);
+        responseText = "";
     }
 }
