@@ -54,11 +54,18 @@ public class Handle: MonoBehaviour {
         }
     }
 
+    public void TryDetachAll() {
+        for(int i = 0; i < holdingHands.Count; i++) {
+            Detach(holdingHands[i]);
+        }
+    }
+
     void FixedUpdate() {
         for(int i = 0; i < holdingHands.Count; i++) {
-            Vector3 vdisplacement = holdingHands[i].transform.position - transform.position;
-            steerRigidbody.AddForceAtPosition(attachForce * vdisplacement, transform.position, ForceMode.Acceleration);
-            steerRigidbody.AddForceAtPosition(-attachForceDamper * steerRigidbody.GetPointVelocity(transform.position), transform.position, ForceMode.Acceleration);
+            Vector3 vdisplacement = holdingHands[i].objectAttachmentPoint.transform.position - transform.position;
+            vdisplacement = vdisplacement.normalized;
+            steerRigidbody.AddForceAtPosition(attachForce * vdisplacement, transform.position, ForceMode.Force);
+            steerRigidbody.AddForceAtPosition(-attachForceDamper * steerRigidbody.GetPointVelocity(transform.position), transform.position, ForceMode.Force);
         }
 
     }

@@ -18,7 +18,7 @@ public class VehicleMovement : MonoBehaviour {
     public float maxGroundDist = 5f;        //The distance the ship can be above the ground before it is "falling"
     public float hoverForce = 300f;         //The force of the ship's hovering
     public LayerMask whatIsGround;          //A layer mask to determine what layer the ground is on
-    public LayerMask whatIsWall;            //A layer mask to determine what layer the ground is on
+    public LayerMask whatIsObstacle;            //A layer mask to determine what layer the ground is on
     public PIDController hoverPID;          //A PID controller to smooth the ship's hovering
 
     [Header("Physics Settings")]
@@ -147,22 +147,22 @@ public class VehicleMovement : MonoBehaviour {
     }
 
     void OnCollisionStay(Collision collision) {
+        Debug.LogError("Collision Stay");
         //If the ship has collided with an object on the Wall layer...
-        if(collision.gameObject.layer == whatIsWall) {
-            //...calculate how much upward impulse is generated and then push the vehicle down by that amount 
-            //to keep it stuck on the track (instead up popping up over the wall)
-            Vector3 upwardForceFromCollision = Vector3.Dot(collision.impulse, transform.up) * transform.up;
-            rigidBody.AddForce(-upwardForceFromCollision, ForceMode.Impulse);
-        }
+        //...calculate how much upward impulse is generated and then push the vehicle down by that amount 
+        //to keep it stuck on the track (instead up popping up over the wall)
+        Vector3 upwardForceFromCollision = Vector3.Dot(collision.impulse, transform.up) * transform.up;
+        rigidBody.AddForce(-upwardForceFromCollision, ForceMode.Impulse);
+
     }
 
     void OnCollisionEnter(Collision collision) {
         //If the ship has collided with an object on the Wall layer...
-
-        Debug.Log("DOT: " + Vector3.Dot(collision.impulse.normalized, transform.forward));
-        if(Vector3.Dot(collision.impulse, transform.forward) < crashDotThreshold)
-            GameManager.Instance.Restart();
-
+        if(collision.gameObject.layer == whatIsObstacle) {
+            Debug.Log("DOT: " + Vector3.Dot(collision.impulse.normalized, transform.forward));
+            if(Vector3.Dot(collision.impulse, transform.forward) < crashDotThreshold)
+                GameManager.Instance.Restart();
+        }
     }
 
     public float GetSpeedPercentage() {

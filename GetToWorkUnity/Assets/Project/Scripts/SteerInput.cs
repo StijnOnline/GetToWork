@@ -6,8 +6,10 @@ using UnityEngine.Events;
 public class SteerInput : MonoBehaviour {
     [Header("References")]
     [SerializeField] private Transform steer = null;
-    [SerializeField] private Interactable leftHandle = null;
-    [SerializeField] private Interactable rightHandle = null;
+    [SerializeField] private Interactable leftHandleInteractable = null;
+    [SerializeField] private Handle leftHandle = null;
+    [SerializeField] private Interactable rightHandleInteractable = null;
+    [SerializeField] private Handle rightHandle = null;
 
     [Header("Values")]
     [SerializeField] private float steerMultiplier = 1;
@@ -20,14 +22,21 @@ public class SteerInput : MonoBehaviour {
 
 
     void Update() {
-        rudder = steer.rotation.x * steerMultiplier;
+        rudder = steer.localRotation.x * steerMultiplier;
 
-        leftGrabbed = leftHandle.attachedToHand != null;
-        rightGrabbed = rightHandle.attachedToHand != null;
+        leftGrabbed = leftHandleInteractable.attachedToHand != null;
+        rightGrabbed = rightHandleInteractable.attachedToHand != null;
         if(leftGrabbed && rightGrabbed) {
             GameManager.Instance.StartGame();
         }
 
         thruster = GameManager.Instance.started ? 1 : 0;
+    }
+
+    public void ResetSteer() {
+
+        steer.localRotation = Quaternion.identity;
+        leftHandle.TryDetachAll();
+        rightHandle.TryDetachAll();
     }
 }
