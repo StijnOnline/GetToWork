@@ -15,7 +15,7 @@ public class ReplaceToolWindow : EditorWindow {
     private GameObject originalObject = null;
     private GameObject replacedObject = null;
 
-    [MenuItem("Window/Replace Selection")]
+    [MenuItem("Window/Replace Tool")]
     static void Init() {
         ReplaceToolWindow window = (ReplaceToolWindow)EditorWindow.GetWindow(typeof(ReplaceToolWindow));
     }
@@ -35,9 +35,16 @@ public class ReplaceToolWindow : EditorWindow {
 
         GUILayout.Space(20);
         GUILayout.Label("Copy Replace", EditorStyles.boldLabel);
+        GUILayout.Label(
+@"Replaces multiple objects based on an example replacement, this action is Undo-able.
+1. Drag an object that needs to be replaced in the 'Original Object' field
+2. Place a replacement object in the right position as if it were to replace the original object
+3. Drag this object in the 'Replaced Object' field
+4. Select other similar objects that need to be replaced
+5. Press the 'Replace Selection' button"
+            , EditorStyles.wordWrappedLabel);
         originalObject = (GameObject)EditorGUILayout.ObjectField("Original Object", originalObject, typeof(GameObject));
         replacedObject = (GameObject)EditorGUILayout.ObjectField("Replaced Object", replacedObject, typeof(GameObject));
-
         if(GUILayout.Button("Replace Selection")) {
             CopyReplace();
         }
@@ -60,22 +67,29 @@ public class ReplaceToolWindow : EditorWindow {
     }
 
     void CopyReplace() {
-        if(originalObject == null)
+        if(originalObject == null) {
+            Debug.LogError("Replace Tool Error: original object unknown");
             return;
-        if(replacedObject == null)
+        }
+        if(replacedObject == null) {
+            Debug.LogError("Replace Tool Error: replaced object unknown");
             return;
-        if(Selection.transforms.Length == 0)
+        }
+        if(Selection.transforms.Length == 0) {
+            Debug.LogError("Replace Tool Error: nothing selected");
             return;
+        }
 
-        float relativeScale = replacedObject.transform.lossyScale.magnitude / originalObject.transform.lossyScale.magnitude;
-        Quaternion relativeRotation = Quaternion.RotateTowards(originalObject.transform.rotation, replacedObject.transform.rotation, float.MaxValue);
-        Vector3 relativePos = replacedObject.transform.position - originalObject.transform.transform.position;        
+        Quaternion relativeRotation = Quaternion.Inverse(originalObject.transform.rotation) * replacedObject.transform.rotation;
+        Vector3 globalPositionOffset = replacedObject.transform.position - originalObject.transform.position;
+        Vector3 relativePositionOffset = originalObject.transform.InverseTransformDirection(globalPositionOffset);
 
         foreach(GameObject referenceObject in Selection.gameObjects) {
             //Create New
-            Vector3 globalPostionOffset = replacedObject.transform.InverseTransformDirection(relativePos);
-            GameObject created = Instantiate(replacedObject, referenceObject.transform.position + globalPostionOffset, referenceObject.transform.rotation * relativeRotation);
-            created.transform.localScale *= relativeScale;
+            GameObject created = Instantiate(replacedObject);
+            created.transform.rotation = referenceObject.transform.rotation * relativeRotation;
+            created.transform.position = referenceObject.transform.position + referenceObject.transform.TransformDirection(relativePositionOffset);
+            created.transform.localScale = replacedObject.transform.localScale;
             Undo.RegisterCreatedObjectUndo(created, "Created Replacement");
             Undo.DestroyObjectImmediate(referenceObject);
         }
