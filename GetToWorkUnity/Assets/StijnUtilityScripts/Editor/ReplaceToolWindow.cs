@@ -36,11 +36,11 @@ public class ReplaceToolWindow : EditorWindow {
         GUILayout.Space(20);
         GUILayout.Label("Copy Replace", EditorStyles.boldLabel);
         GUILayout.Label(
-@"Replaces multiple objects based on an example replacement, this action is Undo-able.
+@"With this tool you only have to manually replace one object, this same action can then be used on multiple objects. This can be used to replace blockout objects into high poly models for example. This action is Undo-able.
 1. Drag an object that needs to be replaced in the 'Original Object' field
 2. Place a replacement object in the right position as if it were to replace the original object
 3. Drag this object in the 'Replaced Object' field
-4. Select other similar objects that need to be replaced
+4. Select other similar objects in the world that need to be replaced
 5. Press the 'Replace Selection' button"
             , EditorStyles.wordWrappedLabel);
         originalObject = (GameObject)EditorGUILayout.ObjectField("Original Object", originalObject, typeof(GameObject));
