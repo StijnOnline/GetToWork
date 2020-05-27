@@ -6,14 +6,16 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager Instance { get; private set; }
     public string playerTag = "Player";
-
-
     public bool started { get; private set; } = false;
     private CheckPoint latestCheckPoint = null;
     [SerializeField] private Transform defaultSpawn = null;
+    [SerializeField] private Transform player = null;
     [SerializeField] private Rigidbody bikeRB = null;
     [SerializeField] private SteerInput steerInput = null;
     [SerializeField] private Rigidbody steerRB = null;
+    [SerializeField] private CalibrateVRPosition calibrateVR = null;
+    [SerializeField] private VehicleMovement vehicleMovement = null;
+
 
     private void Awake() {
         if(Instance != null && Instance != this) {
@@ -36,7 +38,20 @@ public class GameManager : MonoBehaviour {
     }
 
     //when player dies or falls
+    public void Death() {
+        player.SetParent(null);
+        vehicleMovement.enabled = false;
+        bikeRB.useGravity = true;
+
+        Invoke("Restart",2f);
+    }
+
     public void Restart() {
+        player.SetParent(bikeRB.transform);
+        calibrateVR.PositionPlayer();
+
+        vehicleMovement.enabled = true;
+        bikeRB.useGravity = false;
         bikeRB.isKinematic = true;
         steerRB.isKinematic = true;
         started = false;

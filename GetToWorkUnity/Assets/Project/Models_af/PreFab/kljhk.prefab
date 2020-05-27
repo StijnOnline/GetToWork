@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8721341806623557563}
   - component: {fileID: 2940271977040328339}
   - component: {fileID: 1231454179264735710}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 7397828292115679014}
   - component: {fileID: 8481206721416634081}
   - component: {fileID: 8749727137117383133}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Side
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -167,8 +167,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8574018914469833752}
-  m_Layer: 0
-  m_Name: Huis1
+  - component: {fileID: 5394866294962682275}
+  m_Layer: 9
+  m_Name: kljhk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -181,7 +182,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4658500055494467083}
-  m_LocalRotation: {x: 0.10935396, y: 0.70416445, z: 0.12503245, w: 0.69033414}
+  m_LocalRotation: {x: 0.10935237, y: 0.7041659, z: 0.12503554, w: 0.6903323}
   m_LocalPosition: {x: -28.67, y: -25.04, z: 196.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -190,3 +191,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -1.439, y: 90.895004, z: 19.071001}
+--- !u!65 &5394866294962682275
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4658500055494467083}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 9.012204, y: 18.84801, z: 20.60552}
+  m_Center: {x: -0.015398739, y: 8.799922, z: 1.2614595}

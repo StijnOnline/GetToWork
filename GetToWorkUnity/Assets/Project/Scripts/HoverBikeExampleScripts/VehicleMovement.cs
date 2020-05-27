@@ -147,21 +147,21 @@ public class VehicleMovement : MonoBehaviour {
     }
 
     void OnCollisionStay(Collision collision) {
-        Debug.LogError("Collision Stay");
+        //Debug.Log("Collision Stay");
         //If the ship has collided with an object on the Wall layer...
         //...calculate how much upward impulse is generated and then push the vehicle down by that amount 
         //to keep it stuck on the track (instead up popping up over the wall)
-        Vector3 upwardForceFromCollision = Vector3.Dot(collision.impulse, transform.up) * transform.up;
-        rigidBody.AddForce(-upwardForceFromCollision, ForceMode.Impulse);
+        //Vector3 upwardForceFromCollision = Vector3.Dot(collision.impulse, transform.up) * transform.up;
+        //rigidBody.AddForce(-upwardForceFromCollision, ForceMode.Impulse);
 
     }
 
     void OnCollisionEnter(Collision collision) {
         //If the ship has collided with an object on the Wall layer...
-        if(collision.gameObject.layer == whatIsObstacle) {
+        if((whatIsObstacle.value & 1<<collision.gameObject.layer) != 0) {
             Debug.Log("DOT: " + Vector3.Dot(collision.impulse.normalized, transform.forward));
             if(Vector3.Dot(collision.impulse, transform.forward) < crashDotThreshold)
-                GameManager.Instance.Restart();
+                GameManager.Instance.Death();
         }
     }
 

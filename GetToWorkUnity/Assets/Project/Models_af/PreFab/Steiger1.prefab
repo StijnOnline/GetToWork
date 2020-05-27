@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2931978135683815039}
-  m_Layer: 0
-  m_Name: Steigers
+  m_Layer: 10
+  m_Name: Steiger1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

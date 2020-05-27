@@ -201,7 +201,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3436101204219999538}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -7.016707e-15, y: 179.99998, z: 7.0167083e-15}
 --- !u!1 &6436920086848918605
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,7 +232,7 @@ Transform:
   - {fileID: 3436101204219999538}
   m_Father: {fileID: 7924982816514107998}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.000017075472, y: 90.00001, z: -90}
 --- !u!1 &6551102609064397003
 GameObject:
   m_ObjectHideFlags: 0
@@ -350,7 +350,7 @@ Transform:
   - {fileID: 2706214651633189900}
   m_Father: {fileID: 4041707617392718229}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98021, y: 0.0000061469445, z: 0}
 --- !u!1 &8363840845265115724
 GameObject:
   m_ObjectHideFlags: 0
@@ -380,7 +380,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7924982816514107998}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.000006830189, y: 90, z: -89.99999}
 --- !u!1 &8386412501267619100
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,6 +391,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4772087604149841679}
   - component: {fileID: 523377063763866016}
+  - component: {fileID: 4425123773032579234}
   m_Layer: 0
   m_Name: Paal_metanimatie
   m_TagString: Untagged
@@ -423,7 +424,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8386412501267619100}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: e593840d548af1f489cac246d6197aee, type: 2}
   m_CullingMode: 0
@@ -434,6 +435,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!136 &4425123773032579234
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8386412501267619100}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1
+  m_Height: 6.3
+  m_Direction: 1
+  m_Center: {x: 0, y: 2.2, z: 0}
 --- !u!1 &8686801011214824559
 GameObject:
   m_ObjectHideFlags: 0
@@ -465,4 +480,4 @@ Transform:
   - {fileID: 1336912055624398560}
   m_Father: {fileID: 4772087604149841679}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98021, y: 0, z: 0}

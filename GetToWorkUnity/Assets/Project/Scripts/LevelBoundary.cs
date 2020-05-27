@@ -6,7 +6,7 @@ public class LevelBoundary : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other) {
         if(other.gameObject.tag == GameManager.Instance.playerTag) {
-            GameManager.Instance.Restart();
+            GameManager.Instance.Death();
 
             //other stuff?
         }

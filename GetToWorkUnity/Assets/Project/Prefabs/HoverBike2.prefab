@@ -3720,7 +3720,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6244314333516177616
 Transform:
   m_ObjectHideFlags: 0
@@ -3776,6 +3776,8 @@ MonoBehaviour:
     actionPath: /actions/BikeVR/in/Calibrate
     needsReinit: 0
   inputSource: 2
+  lastPlayerLocalPos: {x: 0, y: 0, z: 0}
+  lastPlayerLocalRot: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &6244314333516177618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3793,15 +3795,15 @@ MonoBehaviour:
   slowingVelFactor: 0.99
   brakingVelFactor: 0.95
   angleOfRoll: 0
-  hoverHeight: 0.48
+  hoverHeight: 0.8
   maxGroundDist: 5
-  hoverForce: 300
+  hoverForce: 500
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 1025
+    m_Bits: 1024
   whatIsObstacle:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   hoverPID:
     pCoeff: 0.8
     iCoeff: 0.0002
@@ -3811,9 +3813,9 @@ MonoBehaviour:
   shipBody: {fileID: 6244314333183451782}
   terminalVelocity: 15
   hoverGravity: 20
-  fallGravity: 60
+  fallGravity: 80
   input: {fileID: 7315616741486653314}
-  crashDotThreshold: -0.423
+  crashDotThreshold: 0.1
 --- !u!54 &6244314333516177617
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3841,7 +3843,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 1.49, z: 0.82}
   m_Axis: {x: 0, y: 1, z: -0.3}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.003668918, y: 0, z: -0.007657277}
+  m_ConnectedAnchor: {x: -0.0036691304, y: 0, z: -0.007657334}
   m_UseSpring: 1
   m_Spring:
     spring: 5
