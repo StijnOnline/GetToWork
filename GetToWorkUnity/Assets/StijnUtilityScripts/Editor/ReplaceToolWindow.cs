@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 public class ReplaceToolWindow : EditorWindow {
 
     
-    private GameObject targetObject = null;
-    private Vector3 positionOffset = Vector3.zero;
-    private Vector3 rotationOffset = Vector3.zero;
-    private float scaleMultiplier = 1f;
-
+    private Object prefab = null;
     private GameObject originalObject = null;
     private GameObject replacedObject = null;
+    private string newTag;
+    private bool tagChildren;
+    private int newLayer;
+    private bool layerChildren;
+    private bool keepParent;
 
     [MenuItem("Window/Replace Tool")]
     static void Init() {
@@ -21,19 +22,6 @@ public class ReplaceToolWindow : EditorWindow {
     }
 
     void OnGUI() {
-
-
-        GUILayout.Label("Simple Replace", EditorStyles.boldLabel);
-        targetObject = (GameObject)EditorGUILayout.ObjectField(targetObject, typeof(GameObject));
-        positionOffset = EditorGUILayout.Vector3Field("Position Offset", positionOffset);
-        rotationOffset = EditorGUILayout.Vector3Field("Rotation Offset", rotationOffset);
-        scaleMultiplier = EditorGUILayout.FloatField("Scale Multiplier", scaleMultiplier);
-
-        if(GUILayout.Button("Replace Selection")) {
-            SimpleReplace();
-        }
-
-        GUILayout.Space(20);
         GUILayout.Label("Copy Replace", EditorStyles.boldLabel);
         GUILayout.Label(
 @"With this tool you only have to manually replace one object, this same action can then be used on multiple objects. This can be used to replace blockout objects into high poly models for example. This action is Undo-able.
@@ -43,26 +31,18 @@ public class ReplaceToolWindow : EditorWindow {
 4. Select other similar objects in the world that need to be replaced
 5. Press the 'Replace Selection' button"
             , EditorStyles.wordWrappedLabel);
-        originalObject = (GameObject)EditorGUILayout.ObjectField("Original Object", originalObject, typeof(GameObject));
-        replacedObject = (GameObject)EditorGUILayout.ObjectField("Replaced Object", replacedObject, typeof(GameObject));
+        prefab = EditorGUILayout.ObjectField("Prefab",prefab, typeof(GameObject),false);
+        originalObject = (GameObject)EditorGUILayout.ObjectField("Original Object", originalObject, typeof(GameObject), true);
+        replacedObject = (GameObject)EditorGUILayout.ObjectField("Replaced Object", replacedObject, typeof(GameObject),true);
+        keepParent = EditorGUILayout.Toggle("Keep parent", keepParent);
+        EditorGUILayout.Space(10);
+        newTag = EditorGUILayout.TagField("New Tag", newTag);
+        tagChildren = EditorGUILayout.Toggle("Tag all children", tagChildren);
+        newLayer = EditorGUILayout.LayerField("New Layer", newLayer);
+        layerChildren = EditorGUILayout.Toggle("Set layer of all children", layerChildren);
+        
         if(GUILayout.Button("Replace Selection")) {
             CopyReplace();
-        }
-    }
-
-    void SimpleReplace() {
-        if(targetObject == null)
-            return;
-        if(Selection.transforms.Length == 0)
-            return;
-
-        foreach(GameObject referenceObject in Selection.gameObjects) {
-            //Create New
-            Vector3 globalPostionOffset = referenceObject.transform.TransformDirection(positionOffset);
-            GameObject created = Instantiate(targetObject,referenceObject.transform.position + globalPostionOffset, referenceObject.transform.rotation * Quaternion.Euler(rotationOffset));
-            created.transform.localScale *= scaleMultiplier;
-            Undo.RegisterCreatedObjectUndo(created,"Created Replacement");
-            Undo.DestroyObjectImmediate(referenceObject);
         }
     }
 
@@ -86,10 +66,27 @@ public class ReplaceToolWindow : EditorWindow {
 
         foreach(GameObject referenceObject in Selection.gameObjects) {
             //Create New
-            GameObject created = Instantiate(replacedObject);
+            GameObject created = (GameObject) PrefabUtility.InstantiatePrefab(prefab);
             created.transform.rotation = referenceObject.transform.rotation * relativeRotation;
             created.transform.position = referenceObject.transform.position + referenceObject.transform.TransformDirection(relativePositionOffset);
             created.transform.localScale = replacedObject.transform.localScale;
+
+            created.layer = newLayer;
+            if(layerChildren) {
+                foreach(Transform child in created.transform) {
+                    child.gameObject.layer = newLayer;
+                }
+            }
+
+            created.tag = newTag;
+            if(tagChildren) {
+                foreach(Transform child in created.transform) {
+                    child.tag = newTag;
+                }
+            }
+
+            created.transform.SetParent(referenceObject.transform.parent);
+
             Undo.RegisterCreatedObjectUndo(created, "Created Replacement");
             Undo.DestroyObjectImmediate(referenceObject);
         }
