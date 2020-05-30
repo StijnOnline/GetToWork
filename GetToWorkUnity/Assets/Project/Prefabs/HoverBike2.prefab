@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1668752436425175124}
   m_LocalRotation: {x: -0.09229599, y: 0.09229599, z: 0.7010574, w: 0.7010574}
-  m_LocalPosition: {x: 0, y: 1.502, z: 0.834}
+  m_LocalPosition: {x: 0, y: 1.2419997, z: 0.834}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3653034769831260710}
@@ -50,6 +50,17 @@ MonoBehaviour:
   rightHandleInteractable: {fileID: 3653034770011514741}
   rightHandle: {fileID: 3653034770011514740}
   steerMultiplier: 1.2
+  defaultTerminalVelocity: 15
+  minimumTerminalVelocity: 10
+  boostMultiplier: 0.5
+  brakeAction:
+    actionPath: /actions/default/in/Squeeze
+    needsReinit: 0
+  brakeSource: 1
+  boostAction:
+    actionPath: /actions/default/in/Squeeze
+    needsReinit: 0
+  boostSource: 2
 --- !u!1 &3537193902990071185
 GameObject:
   m_ObjectHideFlags: 0
@@ -74,7 +85,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3537193902990071185}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.623, z: 0.307}
+  m_LocalPosition: {x: 0, y: 2.3629997, z: 0.307}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6244314333516177616}
@@ -104,7 +115,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3537193904406802875}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.26, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6244314333183451782}
@@ -2341,13 +2352,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
-  driveForce: 5
+  driveForce: 8
   slowingVelFactor: 0.99
   brakingVelFactor: 0.95
   angleOfRoll: 0
   hoverHeight: 0.8
-  maxGroundDist: 5
-  hoverForce: 500
+  maxGroundDist: 2
+  hoverForce: 300
   whatIsGround:
     serializedVersion: 2
     m_Bits: 1024
@@ -2358,10 +2369,9 @@ MonoBehaviour:
     pCoeff: 0.8
     iCoeff: 0.0002
     dCoeff: 0.2
-    minimum: -1
-    maximum: 1
+    minimum: -50
+    maximum: 50
   shipBody: {fileID: 6244314333183451782}
-  terminalVelocity: 15
   hoverGravity: 20
   fallGravity: 80
   input: {fileID: 7315616741486653314}
