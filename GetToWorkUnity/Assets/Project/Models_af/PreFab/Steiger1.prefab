@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 6005758089079096550}
   - component: {fileID: 2342225791159112688}
   - component: {fileID: 2812915519563627475}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: low poly
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 5892077385477084886}
   - component: {fileID: 8422285751385657608}
   - component: {fileID: 8166168643222694783}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Leg_lowpoly
   m_TagString: Untagged
   m_Icon: {fileID: 0}
