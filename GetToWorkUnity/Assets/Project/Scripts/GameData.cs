@@ -15,11 +15,11 @@ public class GameData : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public Vector3 spawnPointPosition;
-    public Quaternion spawnPointRotation;
-    public Vector3 lastPlayerLocalPos;
-    public Quaternion lastPlayerLocalRot;
-    public Transform playerObject = null;
-    public Transform playerHead;
-    public Transform bike;
+    [HideInInspector] public Vector3 spawnPointPosition;
+    [HideInInspector] public Quaternion spawnPointRotation;
+    [HideInInspector] public Vector3 lastPlayerLocalPos;
+    [HideInInspector] public Quaternion lastPlayerLocalRot;
+    [HideInInspector] public Transform playerObject = null;
+    [HideInInspector] public Transform playerHead;
+    [HideInInspector] public Transform bike;
 }
