@@ -1,6 +1,7 @@
 ﻿//This script handles all of the physics behaviors for the player's ship. The primary functions
 //are handling the hovering and thrust calculations. 
 
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -23,7 +24,6 @@ public class VehicleMovement : MonoBehaviour {
 
     [Header("Physics Settings")]
     public Transform shipBody;              //A reference to the ship's body, this is for cosmetics
-    public float terminalVelocity = 100f;   //The max speed the ship can go
     public float hoverGravity = 20f;        //The gravity applied to the ship while it is on the ground
     public float fallGravity = 80f;         //The gravity applied to the ship while it is falling
 
@@ -40,7 +40,7 @@ public class VehicleMovement : MonoBehaviour {
         rigidBody = GetComponent<Rigidbody>();
 
         //Calculate the ship's drag value
-        drag = driveForce / terminalVelocity;
+        
     }
 
     void FixedUpdate() {
@@ -48,6 +48,9 @@ public class VehicleMovement : MonoBehaviour {
         //how much of the ship's velocity is in the "forward" direction 
         speed = Vector3.Dot(rigidBody.velocity, transform.forward);
 
+        drag = driveForce / input.terminalVelocity;
+        if(input.terminalVelocity == 0)
+            Debug.LogError("Terminal Velocity is zero");
         //Calculate the forces to be applied to the ship
         CalculatHover();
         CalculatePropulsion();
@@ -137,12 +140,11 @@ public class VehicleMovement : MonoBehaviour {
             return;
 
         //If the ship is braking, apply the braking velocty reduction
-        if(input.isBraking)
-            rigidBody.velocity *= brakingVelFactor;
+        //rigidBody.velocity *= Mathf.Lerp(1f, brakingVelFactor, input.brake);
 
         //Calculate and apply the amount of propulsion force by multiplying the drive force
         //by the amount of applied thruster and subtracting the drag amount
-        float propulsion = driveForce * input.thruster - drag * Mathf.Clamp(speed, 0f, terminalVelocity);
+        float propulsion = driveForce * input.thruster - drag * Mathf.Clamp(speed, 0f, input.terminalVelocity);
         rigidBody.AddForce(transform.forward * propulsion, ForceMode.Acceleration);
     }
 
@@ -167,6 +169,6 @@ public class VehicleMovement : MonoBehaviour {
 
     public float GetSpeedPercentage() {
         //Returns the total percentage of speed the ship is traveling
-        return rigidBody.velocity.magnitude / terminalVelocity;
+        return rigidBody.velocity.magnitude / input.terminalVelocity;
     }
 }

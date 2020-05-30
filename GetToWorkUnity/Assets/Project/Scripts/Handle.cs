@@ -20,16 +20,17 @@ public class Handle: MonoBehaviour {
     }
 
     void Update() {
-        for(int i = 0; i < holdingHands.Count; i++) {
+        //HAHA NO DETACHING HANDS
+        /*for(int i = 0; i < holdingHands.Count; i++) {
             if(holdingHands[i].IsGrabEnding(this.gameObject)) {
                 Detach(holdingHands[i]);
             }
-        }
+        }*/
     }
 
     private void HandHoverUpdate(Hand hand) {
         GrabTypes startingGrabType = hand.GetGrabStarting();
-        if(startingGrabType != GrabTypes.None) {
+        if(startingGrabType == GrabTypes.Grip) {
             Attach(hand, startingGrabType);
         }
     }
