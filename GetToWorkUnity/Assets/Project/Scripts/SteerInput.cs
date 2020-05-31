@@ -17,7 +17,7 @@ public class SteerInput : MonoBehaviour {
     [SerializeField] private float steerMultiplier = 1;
 
     private float brake = 0;
-    private float boost = 0;
+    public float boost { get; private set; } = 0;
     [SerializeField] private float defaultTerminalVelocity = 15;
     [SerializeField] private float minimumTerminalVelocity = 10;
     [SerializeField] private float boostMultiplier = 0.5f;

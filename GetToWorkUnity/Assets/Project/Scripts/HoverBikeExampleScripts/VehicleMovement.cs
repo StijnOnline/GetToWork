@@ -9,7 +9,8 @@ public class VehicleMovement : MonoBehaviour {
     public float speed;                     //The current forward speed of the ship
 
     [Header("Drive Settings")]
-    public float driveForce = 17f;          //The force that the engine generates
+    public float defaultDriveForce = 8f;
+    public float boostMultiplier = 1.3f;
     public float slowingVelFactor = .99f;   //The percentage of velocity the ship maintains when not thrusting (e.g., a value of .99 means the ship loses 1% velocity when not thrusting)
     public float brakingVelFactor = .95f;   //The percentage of velocty the ship maintains when braking
     public float angleOfRoll = 30f;         //The angle that the ship "banks" into a turn
@@ -48,7 +49,7 @@ public class VehicleMovement : MonoBehaviour {
         //how much of the ship's velocity is in the "forward" direction 
         speed = Vector3.Dot(rigidBody.velocity, transform.forward);
 
-        drag = driveForce / input.terminalVelocity;
+        drag = defaultDriveForce * (input.boost * boostMultiplier + 1) / input.terminalVelocity;
         if(input.terminalVelocity == 0)
             Debug.LogError("Terminal Velocity is zero");
         //Calculate the forces to be applied to the ship
@@ -144,7 +145,7 @@ public class VehicleMovement : MonoBehaviour {
 
         //Calculate and apply the amount of propulsion force by multiplying the drive force
         //by the amount of applied thruster and subtracting the drag amount
-        float propulsion = driveForce * input.thruster - drag * Mathf.Clamp(speed, 0f, input.terminalVelocity);
+        float propulsion = defaultDriveForce * (input.boost * boostMultiplier + 1) * input.thruster - drag * Mathf.Clamp(speed, 0f, input.terminalVelocity);
         rigidBody.AddForce(transform.forward * propulsion, ForceMode.Acceleration);
     }
 
