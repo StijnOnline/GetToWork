@@ -5,7 +5,7 @@
       "app_key": "application.generated.unity.gettoworkunity.exe",
       "launch_type": "url",
       "url": "steam://launch/",
-      "action_manifest_path": "C:\\Users\\stijn\\Documents\\GitHub\\GetToWork\\GetToWorkUnity\\Assets\\StreamingAssets\\SteamVR\\actions.json",
+      "action_manifest_path": "D:\\Unity_VersieBeheer\\HKU\\JAAR2\\Blok4\\Git_ProjectVrij2\\GetToWorkUnity\\Assets\\StreamingAssets\\SteamVR\\actions.json",
       "strings": {
         "en_us": {
           "name": "GetToWorkUnity [Testing]"
