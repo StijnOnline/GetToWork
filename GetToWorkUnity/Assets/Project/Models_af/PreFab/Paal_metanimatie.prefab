@@ -181,7 +181,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2706214651633189900}
-  - component: {fileID: 8776543279540147316}
   m_Layer: 0
   m_Name: boven.001
   m_TagString: Untagged
@@ -203,19 +202,6 @@ Transform:
   m_Father: {fileID: 3436101204219999538}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -7.016707e-15, y: 179.99998, z: 7.0167083e-15}
---- !u!65 &8776543279540147316
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3090587243328448682}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.02, y: 0.02, z: 0.05}
-  m_Center: {x: 0, y: 0, z: -0.03}
 --- !u!1 &6436920086848918605
 GameObject:
   m_ObjectHideFlags: 0
@@ -405,7 +391,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4772087604149841679}
   - component: {fileID: 523377063763866016}
-  m_Layer: 0
+  - component: {fileID: 5014507367487567308}
+  m_Layer: 9
   m_Name: Paal_metanimatie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -448,6 +435,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!65 &5014507367487567308
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8386412501267619100}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.24, y: 3.61, z: 2.07}
+  m_Center: {x: 0, y: 0.57, z: 0}
 --- !u!1 &8686801011214824559
 GameObject:
   m_ObjectHideFlags: 0
