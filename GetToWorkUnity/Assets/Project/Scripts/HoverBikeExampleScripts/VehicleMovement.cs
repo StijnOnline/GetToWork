@@ -132,20 +132,20 @@ public class VehicleMovement : MonoBehaviour {
         rigidBody.AddForce(sideFriction, ForceMode.Acceleration);
 
         //If not propelling the ship, slow the ships velocity
-        if(input.thruster <= 0f)
-            rigidBody.velocity *= slowingVelFactor;
+        //if(input.thruster <= 0f)
+        //    rigidBody.velocity *= slowingVelFactor;
 
         //Braking or driving requires being on the ground, so if the ship
         //isn't on the ground, exit this method
-        if(!isOnGround)
-            return;
+        //if(!isOnGround)
+        //    return;
 
         //If the ship is braking, apply the braking velocty reduction
         //rigidBody.velocity *= Mathf.Lerp(1f, brakingVelFactor, input.brake);
 
         //Calculate and apply the amount of propulsion force by multiplying the drive force
         //by the amount of applied thruster and subtracting the drag amount
-        float propulsion = defaultDriveForce * (input.boost * boostMultiplier + 1) * input.thruster - drag * Mathf.Clamp(speed, 0f, input.terminalVelocity);
+        float propulsion = defaultDriveForce * (input.boost * boostMultiplier + 1) * input.thruster - drag * Mathf.Clamp(speed, 0f, input.terminalVelocity * 1.3f);
         rigidBody.AddForce(transform.forward * propulsion, ForceMode.Acceleration);
     }
 
