@@ -32,5 +32,13 @@ namespace Valve.VR
                 return SteamVR_Actions.bikeVR_Grab;
             }
         }
+        
+        public virtual SteamVR_Action_Boolean Reset
+        {
+            get
+            {
+                return SteamVR_Actions.bikeVR_Reset;
+            }
+        }
     }
 }

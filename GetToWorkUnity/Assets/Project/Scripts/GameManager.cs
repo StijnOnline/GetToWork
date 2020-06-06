@@ -20,6 +20,10 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private VehicleMovement vehicleMovement = null;
 
 
+    public SteamVR_Action_Boolean restartAction;
+    public SteamVR_Input_Sources inputSource;
+
+
     private void Start() {
         if(Instance != null && Instance != this) {
             Destroy(this.gameObject);
@@ -56,18 +60,32 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    void OnEnable() {
+        restartAction.AddOnStateDownListener(Restart, inputSource);
+    }
+
+    private void Restart(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource) {
+        Death();
+    }
+
     public void StartGame() {
         started = true;
         bikeRB.isKinematic = false;
-        steerRB.isKinematic = false;
+        //steerRB.isKinematic = false;
         //should be temporary
-        steerRB.transform.localPosition = Vector3.zero;
+        //steerRB.transform.localPosition = Vector3.zero;
     }
 
     public void CheckPointReached(CheckPoint checkPoint) {
         latestCheckPoint = checkPoint;
         GameData.Instance.spawnPointPosition = latestCheckPoint.spawnPoint.position;
         GameData.Instance.spawnPointRotation = latestCheckPoint.spawnPoint.rotation;
+    }
+
+    private void Update() {
+        if(Input.GetKeyDown(KeyCode.R)) {//Restart Button
+            Death();
+        }
     }
 
     //when player dies or falls

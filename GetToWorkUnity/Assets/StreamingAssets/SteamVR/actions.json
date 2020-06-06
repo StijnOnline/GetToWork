@@ -62,6 +62,11 @@
       "name": "/actions/BikeVR/in/Grab",
       "type": "vector1",
       "requirement": "mandatory"
+    },
+    {
+      "name": "/actions/BikeVR/in/Reset",
+      "type": "boolean",
+      "requirement": "mandatory"
     }
   ],
   "action_sets": [

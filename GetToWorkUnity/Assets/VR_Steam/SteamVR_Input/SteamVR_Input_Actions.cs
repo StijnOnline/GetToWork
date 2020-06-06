@@ -45,6 +45,8 @@ namespace Valve.VR
         
         private static SteamVR_Action_Single p_bikeVR_Grab;
         
+        private static SteamVR_Action_Boolean p_bikeVR_Reset;
+        
         public static SteamVR_Action_Boolean default_InteractUI
         {
             get
@@ -157,6 +159,14 @@ namespace Valve.VR
             }
         }
         
+        public static SteamVR_Action_Boolean bikeVR_Reset
+        {
+            get
+            {
+                return SteamVR_Actions.p_bikeVR_Reset.GetCopy<SteamVR_Action_Boolean>();
+            }
+        }
+        
         private static void InitializeActionArrays()
         {
             Valve.VR.SteamVR_Input.actions = new Valve.VR.SteamVR_Action[] {
@@ -173,7 +183,8 @@ namespace Valve.VR
                     SteamVR_Actions.default_SnapTurnRight,
                     SteamVR_Actions.default_Haptic,
                     SteamVR_Actions.bikeVR_Calibrate,
-                    SteamVR_Actions.bikeVR_Grab};
+                    SteamVR_Actions.bikeVR_Grab,
+                    SteamVR_Actions.bikeVR_Reset};
             Valve.VR.SteamVR_Input.actionsIn = new Valve.VR.ISteamVR_Action_In[] {
                     SteamVR_Actions.default_InteractUI,
                     SteamVR_Actions.default_Teleport,
@@ -187,7 +198,8 @@ namespace Valve.VR
                     SteamVR_Actions.default_SnapTurnLeft,
                     SteamVR_Actions.default_SnapTurnRight,
                     SteamVR_Actions.bikeVR_Calibrate,
-                    SteamVR_Actions.bikeVR_Grab};
+                    SteamVR_Actions.bikeVR_Grab,
+                    SteamVR_Actions.bikeVR_Reset};
             Valve.VR.SteamVR_Input.actionsOut = new Valve.VR.ISteamVR_Action_Out[] {
                     SteamVR_Actions.default_Haptic};
             Valve.VR.SteamVR_Input.actionsVibration = new Valve.VR.SteamVR_Action_Vibration[] {
@@ -202,7 +214,8 @@ namespace Valve.VR
                     SteamVR_Actions.default_HeadsetOnHead,
                     SteamVR_Actions.default_SnapTurnLeft,
                     SteamVR_Actions.default_SnapTurnRight,
-                    SteamVR_Actions.bikeVR_Calibrate};
+                    SteamVR_Actions.bikeVR_Calibrate,
+                    SteamVR_Actions.bikeVR_Reset};
             Valve.VR.SteamVR_Input.actionsSingle = new Valve.VR.SteamVR_Action_Single[] {
                     SteamVR_Actions.default_Squeeze,
                     SteamVR_Actions.bikeVR_Grab};
@@ -221,7 +234,8 @@ namespace Valve.VR
                     SteamVR_Actions.default_SnapTurnLeft,
                     SteamVR_Actions.default_SnapTurnRight,
                     SteamVR_Actions.bikeVR_Calibrate,
-                    SteamVR_Actions.bikeVR_Grab};
+                    SteamVR_Actions.bikeVR_Grab,
+                    SteamVR_Actions.bikeVR_Reset};
         }
         
         private static void PreInitActions()
@@ -240,6 +254,7 @@ namespace Valve.VR
             SteamVR_Actions.p_default_Haptic = ((SteamVR_Action_Vibration)(SteamVR_Action.Create<SteamVR_Action_Vibration>("/actions/default/out/Haptic")));
             SteamVR_Actions.p_bikeVR_Calibrate = ((SteamVR_Action_Boolean)(SteamVR_Action.Create<SteamVR_Action_Boolean>("/actions/BikeVR/in/Calibrate")));
             SteamVR_Actions.p_bikeVR_Grab = ((SteamVR_Action_Single)(SteamVR_Action.Create<SteamVR_Action_Single>("/actions/BikeVR/in/Grab")));
+            SteamVR_Actions.p_bikeVR_Reset = ((SteamVR_Action_Boolean)(SteamVR_Action.Create<SteamVR_Action_Boolean>("/actions/BikeVR/in/Reset")));
         }
     }
 }
