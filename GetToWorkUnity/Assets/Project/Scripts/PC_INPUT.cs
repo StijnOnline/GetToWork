@@ -6,7 +6,7 @@ public class PC_INPUT : MonoBehaviour
 {
 
     [SerializeField] private Transform steer = null;
-    [SerializeField] private SteerInput steerInput = null;
+    [SerializeField] private NewSteerInput steerInput = null;
     [SerializeField] private float PC_STEERSPEED = 1;
 
     private float Input_Hor = 0;
