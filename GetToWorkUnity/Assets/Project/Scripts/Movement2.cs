@@ -32,9 +32,8 @@ public class Movement2 : MonoBehaviour {
     private bool m_PreviouslyGrounded;
     private Vector3 m_OriginalCameraPosition;
     private bool m_Jumping;
-    [SerializeField] private Transform m_body;
+    [SerializeField] private Transform m_body; 
     public LayerMask groundLayer;
-    public LayerMask obstacleLayer;
     private AudioSource m_AudioSource;
 
     // Use this for initialization
@@ -103,14 +102,9 @@ public class Movement2 : MonoBehaviour {
 
 
         if(m_CharacterController.isGrounded) {
-            Ray ray = new Ray(transform.position + m_body.up * -0.7f + 0.2f * m_body.forward, -m_body.up * 2f);
-            Debug.DrawRay(ray.origin,ray.direction,Color.red,Time.fixedDeltaTime);
-            RaycastHit groundHit;
-            if(Physics.Raycast(ray, out groundHit, 2f, groundLayer)) {
-                if(groundHit.distance < 0.3f) {
-                    m_MoveDir.y = -m_StickToGroundForce;
-                }
-            }
+            if(Physics.Raycast(transform.position - transform.up * 0.2f + 0.2f * transform.forward, -transform.up, 0.2f, groundLayer)) 
+                m_MoveDir.y = -m_StickToGroundForce;
+
             /*if(m_Jump) {
                 m_MoveDir.y = m_JumpSpeed;
                 PlayJumpSound();
@@ -124,9 +118,9 @@ public class Movement2 : MonoBehaviour {
 
         //using two raycasts, try to align the body to the ground
         RaycastHit hit;
-        if(Physics.Raycast(transform.position - transform.up * 0.2f + 0.1f * transform.forward, -transform.up, out hit, 2f, groundLayer)) {
+        if(Physics.Raycast(transform.position - transform.up * 0.2f + 0.1f * transform.forward , -transform.up, out hit, 0.2f, groundLayer)) {
             Vector3 normal1 = hit.normal;
-            if(Physics.Raycast(transform.position - transform.up * 0.2f - 0.1f * transform.forward, -transform.up, out hit, 2f, groundLayer)) {
+            if(Physics.Raycast(transform.position - transform.up * 0.2f - 0.1f * transform.forward, -transform.up, out hit, 0.2f, groundLayer)) {
                 Vector3 normal2 = hit.normal;
                 if(Vector3.Dot(normal1, normal2) > 0.3f) {
                     Vector3 avgNormal = (normal1 + normal2).normalized;
@@ -152,12 +146,6 @@ public class Movement2 : MonoBehaviour {
 
     private void OnControllerColliderHit(ControllerColliderHit hit) {
         Rigidbody body = hit.collider.attachedRigidbody;
-
-        if((obstacleLayer.value & 1 << hit.gameObject.layer) != 0) {
-            GameManager.Instance.Death();
-        }
-
-
         //dont move the rigidbody if the character is on top of it
         if(m_CollisionFlags == CollisionFlags.Below) {
             return;
@@ -167,8 +155,6 @@ public class Movement2 : MonoBehaviour {
             return;
         }
         body.AddForceAtPosition(m_CharacterController.velocity * 0.1f, hit.point, ForceMode.Impulse);
-
-        
     }
 }
 
