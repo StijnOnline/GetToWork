@@ -61,12 +61,12 @@ public class Movement2 : MonoBehaviour {
 
         if(!m_PreviouslyGrounded && m_CharacterController.isGrounded) {
             PlayLandingSound();
-            m_MoveDir.y = 0f;
+            //m_MoveDir.y = 0f;
             m_Jumping = false;
         }
-        if(!m_CharacterController.isGrounded && !m_Jumping && m_PreviouslyGrounded) {
+        /*if(!m_CharacterController.isGrounded && !m_Jumping && m_PreviouslyGrounded) {
             m_MoveDir.y = 0f;
-        }
+        }*/
 
         m_PreviouslyGrounded = m_CharacterController.isGrounded;
     }
@@ -100,10 +100,16 @@ public class Movement2 : MonoBehaviour {
         m_MoveDir.x = desiredMove.x * speed;
         m_MoveDir.z = desiredMove.z * speed;
 
+        Ray ray = new Ray(transform.position + transform.up * -0.7f + 0.4f * transform.forward, -transform.up * 2f);
+        Debug.DrawRay(ray.origin, ray.direction, Color.red);
+        bool customGrounded = Physics.Raycast(ray, 0.4f, groundLayer);
 
-        if(m_CharacterController.isGrounded) {
-            if(Physics.Raycast(transform.position - transform.up * 0.2f + 0.2f * transform.forward, -transform.up, 0.2f, groundLayer)) 
+        if(m_CharacterController.isGrounded && customGrounded) {
+
+            if(customGrounded) {
                 m_MoveDir.y = -m_StickToGroundForce;
+            }
+
 
             /*if(m_Jump) {
                 m_MoveDir.y = m_JumpSpeed;
@@ -118,9 +124,9 @@ public class Movement2 : MonoBehaviour {
 
         //using two raycasts, try to align the body to the ground
         RaycastHit hit;
-        if(Physics.Raycast(transform.position - transform.up * 0.2f + 0.1f * transform.forward , -transform.up, out hit, 0.2f, groundLayer)) {
+        if(Physics.Raycast(m_body.position + m_body.up * -0.5f + 0.1f * m_body.forward, -m_body.up, out hit, 0.8f, groundLayer)) {
             Vector3 normal1 = hit.normal;
-            if(Physics.Raycast(transform.position - transform.up * 0.2f - 0.1f * transform.forward, -transform.up, out hit, 0.2f, groundLayer)) {
+            if(Physics.Raycast(m_body.position + m_body.up * -0.5f - 0.1f * m_body.forward, -m_body.up, out hit, 0.8f, groundLayer)) {
                 Vector3 normal2 = hit.normal;
                 if(Vector3.Dot(normal1, normal2) > 0.3f) {
                     Vector3 avgNormal = (normal1 + normal2).normalized;
