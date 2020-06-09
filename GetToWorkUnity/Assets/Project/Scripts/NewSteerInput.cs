@@ -33,8 +33,8 @@ public class NewSteerInput : MonoBehaviour {
 
 
     void Update() {
-        Steering = (Mathf.Abs(steer.localRotation.x) > steerThreshold ? steer.localRotation.x * steerMultiplier : 0);
-        Debug.Log(Steering);
+        float relativeAngle = (steer.localRotation.eulerAngles.x + 180) % 360 - 180;
+        Steering = Mathf.Abs(relativeAngle) > steerThreshold ? relativeAngle * steerMultiplier : 0;
 
         leftGrabbed = leftHandleInteractable.attachedToHand != null;
         rightGrabbed = rightHandleInteractable.attachedToHand != null;

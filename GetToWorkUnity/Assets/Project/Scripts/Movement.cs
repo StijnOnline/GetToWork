@@ -10,6 +10,7 @@ using UnityStandardAssets.CrossPlatformInput;
             public float BrakeSpeed = 8.0f;
             public float NormalSpeed = 12.0f;
             public float BoostSpeed = 16.0f;
+            public float CustomGravity = 1f;
             
 
             public float JumpForce = 30f;
@@ -34,6 +35,7 @@ using UnityStandardAssets.CrossPlatformInput;
 
 
         private Rigidbody m_RigidBody;
+        [SerializeField] private Transform body;
         private CapsuleCollider m_Capsule;
         [SerializeField] private NewSteerInput m_SteerInput;
         private float m_YRotation;
@@ -59,7 +61,12 @@ using UnityStandardAssets.CrossPlatformInput;
         private void Update() {
             RotateView();
 
-            if(CrossPlatformInputManager.GetButtonDown("Jump") && !m_Jump) {
+            //rotate body to align with ground
+            //Vector3 projection = Vector3.ProjectOnPlane(transform.forward, m_GroundContactNormal);
+            //Quaternion rotation = Quaternion.LookRotation(transform.up, m_GroundContactNormal);
+            //body.Rotate(Quaternion.Lerp(body.rotation, rotation, Time.deltaTime * 10f).eulerAngles, Space.World);
+
+        if(CrossPlatformInputManager.GetButtonDown("Jump") && !m_Jump) {
                 m_Jump = true;
             }
         }
@@ -101,9 +108,11 @@ using UnityStandardAssets.CrossPlatformInput;
                     m_Jumping = true;
                 }
             } else {
+                m_RigidBody.AddForce(-movementSettings.CustomGravity * m_GroundContactNormal);
+
                 m_RigidBody.drag = 0f;
                 if(m_PreviouslyGrounded && !m_Jumping) {
-                    StickToGroundHelper();
+                    //StickToGroundHelper();
                 }
             }
             m_Jump = false;

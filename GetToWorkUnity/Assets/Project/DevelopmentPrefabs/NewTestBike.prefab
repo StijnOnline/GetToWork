@@ -226,12 +226,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1225263584610373674}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1225263584965641622}
-  m_Father: {fileID: 1225263586170503941}
+  m_Father: {fileID: 767111243906208251}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1225263584630172108
@@ -2159,11 +2159,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1225263585529660640}
   m_LocalRotation: {x: -0.09229599, y: 0.092296, z: 0.70105743, w: 0.7010574}
-  m_LocalPosition: {x: -0, y: 0.469, z: 0.365}
+  m_LocalPosition: {x: 0, y: 0.46899986, z: 0.36499977}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1225263586366457865}
-  m_Father: {fileID: 1225263586170503941}
+  m_Father: {fileID: 767111243906208251}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -15, y: 0, z: 90.00001}
 --- !u!114 &1225263585529660655
@@ -2183,8 +2183,8 @@ MonoBehaviour:
   leftHandle: {fileID: 1225263586156259960}
   rightHandleInteractable: {fileID: 1225263585608074040}
   rightHandle: {fileID: 1225263585608074042}
-  steerMultiplier: 1
-  steerThreshold: 0.1
+  steerMultiplier: 0.01
+  steerThreshold: 0.05
   brakeAction:
     actionPath: /actions/default/in/Squeeze
     needsReinit: 0
@@ -3715,8 +3715,11 @@ GameObject:
   - component: {fileID: 1225263586170503941}
   - component: {fileID: 1225263586170503942}
   - component: {fileID: 1225263586170503943}
-  - component: {fileID: 1225263586170503960}
   - component: {fileID: 1225263586170503961}
+  - component: {fileID: 8236207530518515061}
+  - component: {fileID: 6647291770196599899}
+  - component: {fileID: 1225263586170503960}
+  - component: {fileID: 757720462381566137}
   m_Layer: 8
   m_Name: NewTestBike
   m_TagString: Untagged
@@ -3735,9 +3738,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 4.28, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1225263585529660654}
-  - {fileID: 1225263586470323201}
-  - {fileID: 1225263584610373673}
+  - {fileID: 767111243906208251}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 179.99998, z: 0}
@@ -3771,6 +3772,76 @@ CapsuleCollider:
   m_Height: 2.5
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!59 &1225263586170503961
+HingeJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1225263586170503962}
+  m_ConnectedBody: {fileID: 1225263586366457864}
+  m_Anchor: {x: 0, y: 0.44, z: 0.38}
+  m_Axis: {x: 0, y: 1, z: -0.3}
+  m_AutoConfigureConnectedAnchor: 1
+  m_ConnectedAnchor: {x: -0.014686921, y: 0.0000000017154588, z: 0.0032157137}
+  m_UseSpring: 1
+  m_Spring:
+    spring: 5
+    damper: 2
+    targetPosition: 0
+  m_UseMotor: 0
+  m_Motor:
+    targetVelocity: 0
+    force: 0
+    freeSpin: 0
+  m_UseLimits: 1
+  m_Limits:
+    min: -70
+    max: 70
+    bounciness: 0
+    bounceMinVelocity: 0.2
+    contactDistance: 0
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 1
+  m_MassScale: 0.00001
+  m_ConnectedMassScale: 1
+--- !u!114 &8236207530518515061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1225263586170503962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27991c206a5e66147bb8ee3ef31c8bac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionSet:
+    actionSetPath: /actions/BikeVR
+  forSources: 0
+  disableAllOtherActionSets: 0
+  activateOnStart: 1
+  deactivateOnDestroy: 0
+--- !u!114 &6647291770196599899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1225263586170503962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1df7ffeaf6e08bd47b0b83d9563b8ea6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  headTarget: {fileID: 5492377028631610875}
+  calibrateAction:
+    actionPath: /actions/BikeVR/in/Reset
+    needsReinit: 0
+  inputSource: 2
 --- !u!114 &1225263586170503960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3783,7 +3854,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5d5b7099e386734086037562d9db65c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 0}
   movementSettings:
     BrakeSpeed: 8
     NormalSpeed: 10
@@ -3823,7 +3893,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   advancedSettings:
-    groundCheckDistance: 0.1
+    groundCheckDistance: 0.2
     stickToGroundHelperDistance: 0.5
     slowDownRate: 20
     airControl: 0
@@ -3831,42 +3901,26 @@ MonoBehaviour:
     groundLayer:
       serializedVersion: 2
       m_Bits: 1024
+  body: {fileID: 767111243906208251}
   m_SteerInput: {fileID: 1225263585529660655}
---- !u!59 &1225263586170503961
-HingeJoint:
+--- !u!114 &757720462381566137
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1225263586170503962}
-  m_ConnectedBody: {fileID: 1225263586366457864}
-  m_Anchor: {x: 0, y: 0.44, z: 0.38}
-  m_Axis: {x: 0, y: 1, z: -0.3}
-  m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.014686921, y: 0.0000000017154588, z: 0.0032157137}
-  m_UseSpring: 1
-  m_Spring:
-    spring: 5
-    damper: 2
-    targetPosition: 0
-  m_UseMotor: 0
-  m_Motor:
-    targetVelocity: 0
-    force: 0
-    freeSpin: 0
-  m_UseLimits: 1
-  m_Limits:
-    min: -70
-    max: 70
-    bounciness: 0
-    bounceMinVelocity: 0.2
-    contactDistance: 0
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 1
-  m_MassScale: 0.00001
-  m_ConnectedMassScale: 1
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27991c206a5e66147bb8ee3ef31c8bac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionSet:
+    actionSetPath: /actions/default
+  forSources: 0
+  disableAllOtherActionSets: 0
+  activateOnStart: 1
+  deactivateOnDestroy: 1
 --- !u!1 &1225263586179494804
 GameObject:
   m_ObjectHideFlags: 0
@@ -4518,7 +4572,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1225263586470323202}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.06, y: -1.9720001, z: 0.29}
   m_LocalScale: {x: 1.8408897, y: 1.8408899, z: 1.8408897}
   m_Children:
@@ -4528,7 +4582,7 @@ Transform:
   - {fileID: 1225263586194037041}
   - {fileID: 1225263585710150170}
   - {fileID: 1225263586179494803}
-  m_Father: {fileID: 1225263586170503941}
+  m_Father: {fileID: 767111243906208251}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1225263586470323200
@@ -4860,3 +4914,67 @@ Transform:
   m_Father: {fileID: 1225263585608074041}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -63.039, y: -15.847001, z: 0}
+--- !u!1 &4405739216265016869
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 767111243906208251}
+  m_Layer: 8
+  m_Name: Body
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &767111243906208251
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4405739216265016869}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1225263585529660654}
+  - {fileID: 1225263586470323201}
+  - {fileID: 1225263584610373673}
+  - {fileID: 5492377028631610875}
+  m_Father: {fileID: 1225263586170503941}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7132354520388301444
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5492377028631610875}
+  m_Layer: 8
+  m_Name: HeadTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5492377028631610875
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7132354520388301444}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 767111243906208251}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
