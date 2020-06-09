@@ -14,10 +14,10 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private Transform player = null;
     [SerializeField] private Transform playerHead = null;
     [SerializeField] private Rigidbody bikeRB = null;
-    [SerializeField] private SteerInput steerInput = null;
+    [SerializeField] private NewSteerInput steerInput = null;
     [SerializeField] private Rigidbody steerRB = null;
     [SerializeField] private CalibrateVRPosition calibrateVR = null;
-    [SerializeField] private VehicleMovement vehicleMovement = null;
+    [SerializeField] private MonoBehaviour movementScript = null;
 
 
     public SteamVR_Action_Boolean restartAction;
@@ -32,11 +32,11 @@ public class GameManager : MonoBehaviour {
         }
 
         if(GameData.Instance.spawnPointPosition != Vector3.zero) {
-            bikeRB.position = GameData.Instance.spawnPointPosition;
-            bikeRB.rotation = GameData.Instance.spawnPointRotation;
+            bikeRB.transform.position = GameData.Instance.spawnPointPosition;
+            bikeRB.transform.rotation = GameData.Instance.spawnPointRotation;
         } else {
-            bikeRB.position = defaultSpawn.position;
-            bikeRB.rotation = defaultSpawn.rotation;
+            bikeRB.transform.position = defaultSpawn.position;
+            bikeRB.transform.rotation = defaultSpawn.rotation;
         }
 
         GameData.Instance.playerObject = player;
@@ -58,6 +58,11 @@ public class GameManager : MonoBehaviour {
         if(GameData.Instance.lastPlayerLocalPos != Vector3.zero) {
             calibrateVR.PositionPlayer();
         }
+
+
+        //prepare bike unstarted state
+        //bikeRB.isKinematic = true;
+        movementScript.enabled = false;
     }
 
     void OnEnable() {
@@ -70,10 +75,10 @@ public class GameManager : MonoBehaviour {
 
     public void StartGame() {
         started = true;
-        bikeRB.isKinematic = false;
+
+        movementScript.enabled = true;
+        //bikeRB.isKinematic = false;
         //steerRB.isKinematic = false;
-        //should be temporary
-        //steerRB.transform.localPosition = Vector3.zero;
     }
 
     public void CheckPointReached(CheckPoint checkPoint) {
@@ -92,17 +97,17 @@ public class GameManager : MonoBehaviour {
     public void Death() {
         //GameData.Instance.playerObject.SetParent(null);
         player.parent = null;
-        vehicleMovement.enabled = false;
-        bikeRB.useGravity = true;
+        movementScript.enabled = false;
+        //bikeRB.useGravity = true;
 
-        Invoke("Restart",2f);
+        Invoke("Restart", 2f);
     }
 
     public void Restart() {
         /*player.SetParent(bikeRB.transform);
         calibrateVR.PositionPlayer();
 
-        vehicleMovement.enabled = true;
+        movementScript.enabled = true;
         bikeRB.useGravity = false;
         bikeRB.isKinematic = true;
         steerRB.isKinematic = true;
