@@ -95,10 +95,17 @@ public class Movement2 : MonoBehaviour {
         RaycastHit hitInfo;
         Physics.SphereCast(transform.position, m_CharacterController.radius, Vector3.down, out hitInfo,
                            m_CharacterController.height / 2f, groundLayer, QueryTriggerInteraction.Ignore);
-        desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
+
+
+        //Edge Grinding Issue Fix
+        //Debug.Log(Vector3.Dot(Vector3.up, hitInfo.normal));
+        if(Vector3.Dot(Vector3.up, hitInfo.normal) > 0.1f) {
+            desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
+        }
 
         m_MoveDir.x = desiredMove.x * speed;
         m_MoveDir.z = desiredMove.z * speed;
+
 
         Ray ray = new Ray(transform.position + transform.up * -0.7f + 0.4f * transform.forward, -transform.up * 2f);
         Debug.DrawRay(ray.origin, ray.direction, Color.red);
@@ -120,6 +127,7 @@ public class Movement2 : MonoBehaviour {
         } else {
             m_MoveDir += Physics.gravity * m_GravityMultiplier * Time.fixedDeltaTime;
         }
+        
         m_CollisionFlags = m_CharacterController.Move(m_MoveDir * Time.fixedDeltaTime);
 
         //using two raycasts, try to align the body to the ground
