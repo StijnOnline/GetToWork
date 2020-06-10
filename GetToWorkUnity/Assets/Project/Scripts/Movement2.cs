@@ -34,6 +34,7 @@ public class Movement2 : MonoBehaviour {
     private bool m_Jumping;
     [SerializeField] private Transform m_body; 
     public LayerMask groundLayer;
+    public LayerMask obstacleLayer;
     private AudioSource m_AudioSource;
 
     // Use this for initialization
@@ -160,6 +161,12 @@ public class Movement2 : MonoBehaviour {
 
     private void OnControllerColliderHit(ControllerColliderHit hit) {
         Rigidbody body = hit.collider.attachedRigidbody;
+
+        if((obstacleLayer.value & 1 << hit.gameObject.layer) != 0) {
+            GameManager.Instance.Death();
+        }
+
+
         //dont move the rigidbody if the character is on top of it
         if(m_CollisionFlags == CollisionFlags.Below) {
             return;
