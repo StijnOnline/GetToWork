@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &797849
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 797850}
+  m_Layer: 0
+  m_Name: HeadPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &797850
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797849}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.016, y: 1.43, z: 0.378}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6059480140235145166}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1453152563653055158
 GameObject:
   m_ObjectHideFlags: 0
@@ -2539,7 +2569,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6059480140212728551}
   m_LocalRotation: {x: 0.08157074, y: -0, z: -0, w: 0.99666756}
-  m_LocalPosition: {x: 0, y: 1.603, z: 1.928}
+  m_LocalPosition: {x: -0.012, y: 1.284, z: -0.403}
   m_LocalScale: {x: 0.5432144, y: 0.5432144, z: 0.5432144}
   m_Children: []
   m_Father: {fileID: 6059480139407006257}
@@ -2658,6 +2688,7 @@ Transform:
   - {fileID: 9078171600578496665}
   - {fileID: 6059480140940357421}
   - {fileID: 6059480139559427902}
+  - {fileID: 797850}
   m_Father: {fileID: 6059480141238172317}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3567,7 +3598,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6059480140831130328
 Transform:
   m_ObjectHideFlags: 0
@@ -3576,7 +3607,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6059480140831130331}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.006, y: 0.214, z: 0.147}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6059480139656655184}
@@ -3896,7 +3927,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6059480140940357420}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.059999906, y: -1.5840001, z: -4.29}
+  m_LocalPosition: {x: 0, y: -1.019, z: -0.1}
   m_LocalScale: {x: 1.8408899, y: 1.8408899, z: 1.8408899}
   m_Children:
   - {fileID: 6059480140831130328}
@@ -4555,7 +4586,9 @@ GameObject:
   - component: {fileID: 6059480141238172318}
   - component: {fileID: 6059480141238172313}
   - component: {fileID: 6059480141238172290}
-  m_Layer: 0
+  - component: {fileID: 5936029981506823969}
+  - component: {fileID: 8307970481318699996}
+  m_Layer: 8
   m_Name: NEWNEWBIKE
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4747,6 +4780,9 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 1024
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!59 &6059480141238172290
 HingeJoint:
   m_ObjectHideFlags: 0
@@ -4758,7 +4794,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0.6, z: 0.85}
   m_Axis: {x: 0, y: 1, z: 0.3}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.0062676086, y: -0.0000000034309176, z: -0.007378575}
+  m_ConnectedAnchor: {x: 0.006267715, y: -0.0000000034309176, z: -0.0073785456}
   m_UseSpring: 1
   m_Spring:
     spring: 5
@@ -4782,6 +4818,41 @@ HingeJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &5936029981506823969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6059480141238172312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1df7ffeaf6e08bd47b0b83d9563b8ea6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  headTarget: {fileID: 797850}
+  calibrateAction:
+    actionPath: /actions/BikeVR/in/Calibrate
+    needsReinit: 0
+  inputSource: 2
+--- !u!114 &8307970481318699996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6059480141238172312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27991c206a5e66147bb8ee3ef31c8bac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionSet:
+    actionSetPath: /actions/BikeVR
+  forSources: 0
+  disableAllOtherActionSets: 0
+  activateOnStart: 1
+  deactivateOnDestroy: 1
 --- !u!1 &6059480141247839772
 GameObject:
   m_ObjectHideFlags: 0
