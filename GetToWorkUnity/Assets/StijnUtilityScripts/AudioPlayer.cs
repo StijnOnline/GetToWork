@@ -32,7 +32,7 @@ public class AudioPlayer : MonoBehaviour {
         if(audioClips.TryGetValue(audioname, out _clip)) {
             audioSource.PlayOneShot(_clip, volume);
         } else {
-            Debug.LogWarning("AudioClip not found");
+            Debug.LogWarning("AudioClip not found: '"+audioname+"'");
         }
     }
 }

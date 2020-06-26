@@ -1,168 +1,187 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
-
-    [RequireComponent(typeof(Rigidbody))]
-    [RequireComponent(typeof(CapsuleCollider))]
-    public class Movement : MonoBehaviour {
-        [Serializable]
-        public class NewMovementSettings {
-            public float BrakeSpeed = 8.0f;
-            public float NormalSpeed = 12.0f;
-            public float BoostSpeed = 16.0f;
-            public float CustomGravity = 1f;
-            
-
-            public float JumpForce = 30f;
-            public AnimationCurve SlopeCurveModifier = new AnimationCurve(new Keyframe(-90.0f, 1.0f), new Keyframe(0.0f, 1.0f), new Keyframe(90.0f, 0.0f));
-
-        }
+using UnityStandardAssets.Utility;
+using Random = UnityEngine.Random;
 
 
-        [Serializable]
-        public class NewAdvancedSettings {
-            public float groundCheckDistance = 0.01f; // distance for checking if the controller is grounded ( 0.01f seems to work best for this )
-            public float stickToGroundHelperDistance = 0.5f; // stops the character
-            public float slowDownRate = 20f; // rate at which the controller comes to a stop when there is no input
-            public bool airControl; // can the user control the direction that is being moved in the air
-            [Tooltip("set it to 0.1 or more if you get stuck in wall")]
-            public float shellOffset = 0.1f; //reduce the radius by that ratio to avoid getting stuck in wall (a value of 0.1f is nice)
-            public LayerMask groundLayer;
-        }
+[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(AudioSource))]
+public class Movement : MonoBehaviour {
+    public float BrakeSpeed = 8.0f;
+    public float NormalSpeed = 12.0f;
+    public float BoostSpeed = 16.0f;
+    [SerializeField] [Range(0f, 1f)] private float m_RunstepLenghten;
+    [SerializeField] private float m_JumpSpeed;
+    [SerializeField] private float m_StickToGroundForce;
+    [SerializeField] private float m_GravityMultiplier;
+    [SerializeField] private bool m_UseFovKick;
+    [SerializeField] private FOVKick m_FovKick = new FOVKick();
+    [SerializeField] private float m_StepInterval;
+    [SerializeField] private NewSteerInput m_SteerInput;
+    [SerializeField] private Transform m_body; 
+    [SerializeField] private List<AudioClip> m_LandSounds;
+    [SerializeField] private int m_LandSound_Counter;
+    [SerializeField] private float m_LandSoundVolume;
+    [SerializeField] private List<AudioClip> m_CollisionSounds;
+    [SerializeField] private int m_CollisionSounds_Counter;
+    [SerializeField] private float m_CollisionSoundVolume;
+    //[SerializeField] private AudioClip m_JumpSound;
 
-        public NewMovementSettings movementSettings = new NewMovementSettings();
-        public NewAdvancedSettings advancedSettings = new NewAdvancedSettings();
+    private Camera m_Camera;
+    private float m_YRotation;
+    private Vector2 m_Input;
+    private Vector3 m_MoveDir = Vector3.zero;
+    private CharacterController m_CharacterController;
+    private CollisionFlags m_CollisionFlags;
+    private bool m_PreviouslyGrounded;
+    private Vector3 m_OriginalCameraPosition;
+    private bool m_Jumping;
+    public LayerMask groundLayer;
+    public LayerMask obstacleLayer;
+    private AudioSource m_AudioSource;
+    //private bool m_Jump;
 
+    // Use this for initialization
+    private void Start() {
+        m_CharacterController = GetComponent<CharacterController>();
+        m_Camera = Camera.main;
+        m_OriginalCameraPosition = m_Camera.transform.localPosition;
+        m_FovKick.Setup(m_Camera);
+        m_Jumping = false;
 
-        private Rigidbody m_RigidBody;
-        [SerializeField] private Transform body;
-        private CapsuleCollider m_Capsule;
-        [SerializeField] private NewSteerInput m_SteerInput;
-        private float m_YRotation;
-        private Vector3 m_GroundContactNormal;
-        private bool m_Jump, m_PreviouslyGrounded, m_Jumping, m_IsGrounded;
-
-
-        public Vector3 Velocity {
-            get { return m_RigidBody.velocity; }
-        }
-
-        public bool Grounded {
-            get { return m_IsGrounded; }
-        }
-
-
-        private void Start() {
-            m_RigidBody = GetComponent<Rigidbody>();
-            m_Capsule = GetComponent<CapsuleCollider>();
-        }
-
-
-        private void Update() {
-            RotateView();
-
-            //rotate body to align with ground
-            //Vector3 projection = Vector3.ProjectOnPlane(transform.forward, m_GroundContactNormal);
-            //Quaternion rotation = Quaternion.LookRotation(transform.up, m_GroundContactNormal);
-            //body.Rotate(Quaternion.Lerp(body.rotation, rotation, Time.deltaTime * 10f).eulerAngles, Space.World);
-
-        if(CrossPlatformInputManager.GetButtonDown("Jump") && !m_Jump) {
-                m_Jump = true;
-            }
-        }
-
-        private float GetTargetSpeed() {
-            if(m_SteerInput.brake > 0.1f) {
-                return movementSettings.BrakeSpeed;
-            }else if(m_SteerInput.boost > 0.1f) {
-                return movementSettings.BoostSpeed;
-            } else {
-                return movementSettings.NormalSpeed;
-            }
-        }
-
-
-        private void FixedUpdate() {
-            GroundCheck();
-
-            if((GameManager.Instance == null || GameManager.Instance.started) && (advancedSettings.airControl || m_IsGrounded)) {
-                float TargetSpeed = GetTargetSpeed();
-
-                // always move along the camera forward as it is the direction that it being aimed at
-                Vector3 desiredMove = transform.forward;
-                desiredMove = Vector3.ProjectOnPlane(desiredMove, m_GroundContactNormal).normalized;
-                desiredMove *= TargetSpeed;
-
-                if(m_RigidBody.velocity.sqrMagnitude < (TargetSpeed * TargetSpeed)) {
-                    m_RigidBody.AddForce(desiredMove * SlopeMultiplier(), ForceMode.Impulse);
-                }
-            }
-
-            if(m_IsGrounded) {
-                m_RigidBody.drag = 5f;
-
-                if(m_Jump) {
-                    m_RigidBody.drag = 0f;
-                    m_RigidBody.velocity = new Vector3(m_RigidBody.velocity.x, 0f, m_RigidBody.velocity.z);
-                    m_RigidBody.AddForce(new Vector3(0f, movementSettings.JumpForce, 0f), ForceMode.Impulse);
-                    m_Jumping = true;
-                }
-            } else {
-                m_RigidBody.AddForce(-movementSettings.CustomGravity * m_GroundContactNormal);
-
-                m_RigidBody.drag = 0f;
-                if(m_PreviouslyGrounded && !m_Jumping) {
-                    //StickToGroundHelper();
-                }
-            }
-            m_Jump = false;
-        }
-
-
-        private float SlopeMultiplier() {
-            float angle = Vector3.Angle(m_GroundContactNormal, Vector3.up);
-            return movementSettings.SlopeCurveModifier.Evaluate(angle);
-        }
-
-
-        private void StickToGroundHelper() {
-            RaycastHit hitInfo;
-            if(Physics.SphereCast(transform.position, m_Capsule.radius * (1.0f - advancedSettings.shellOffset), Vector3.down, out hitInfo,
-                                   ((m_Capsule.height / 2f) - m_Capsule.radius) +
-                                   advancedSettings.stickToGroundHelperDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore)) {
-                if(Mathf.Abs(Vector3.Angle(hitInfo.normal, Vector3.up)) < 85f) {
-                    m_RigidBody.velocity = Vector3.ProjectOnPlane(m_RigidBody.velocity, hitInfo.normal);
-                }
-            }
-        }
-
-
-        private void RotateView() {
-            //avoids the mouse looking if the game is effectively paused
-            if(Mathf.Abs(Time.timeScale) < float.Epsilon) return;
-
-            if(m_IsGrounded || advancedSettings.airControl) {
-                // Rotate the rigidbody velocity to match the new direction that the character is looking
-                Quaternion Rotation = Quaternion.AngleAxis(m_SteerInput.Steering, Vector3.up);
-                transform.rotation *= Rotation;
-                m_RigidBody.velocity = Rotation * m_RigidBody.velocity;
-            }
-        }
-
-        /// sphere cast down just beyond the bottom of the capsule to see if the capsule is colliding round the bottom
-        private void GroundCheck() {
-            m_PreviouslyGrounded = m_IsGrounded;
-            RaycastHit hitInfo;
-            if(Physics.SphereCast(transform.position, m_Capsule.radius * (1.0f - advancedSettings.shellOffset), Vector3.down, out hitInfo,
-                                   ((m_Capsule.height / 2f) - m_Capsule.radius) + advancedSettings.groundCheckDistance, advancedSettings.groundLayer, QueryTriggerInteraction.Ignore)) {
-                m_IsGrounded = true;
-                m_GroundContactNormal = hitInfo.normal;
-            } else {
-                m_IsGrounded = false;
-                m_GroundContactNormal = Vector3.up;
-            }
-            if(!m_PreviouslyGrounded && m_IsGrounded && m_Jumping) {
-                m_Jumping = false;
-            }
+        m_AudioSource = GetComponent<AudioSource>();
+        if(m_AudioSource == null) {
+            m_AudioSource = gameObject.AddComponent<AudioSource>();
         }
     }
+
+
+    // Update is called once per frame
+    private void Update() {
+        RotateView();
+
+        /*if(!m_Jump) {
+            m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
+        }*/
+
+        if(!m_PreviouslyGrounded && m_CharacterController.isGrounded) {
+            PlaySound(m_LandSounds[++m_LandSound_Counter % m_LandSounds.Count], m_LandSoundVolume);
+            //m_MoveDir.y = 0f;
+            m_Jumping = false;
+        }
+        /*if(!m_CharacterController.isGrounded && !m_Jumping && m_PreviouslyGrounded) {
+            m_MoveDir.y = 0f;
+        }*/
+
+        m_PreviouslyGrounded = m_CharacterController.isGrounded;
+    }
+
+
+    private void PlaySound(AudioClip clip,float volume) {
+        m_AudioSource.PlayOneShot(clip, volume);
+    }
+
+    private float GetTargetSpeed() {
+        if(m_SteerInput.brake > 0.1f) {
+            return BrakeSpeed;
+        } else if(m_SteerInput.boost > 0.1f) {
+            return BoostSpeed;
+        } else {
+            return NormalSpeed;
+        }
+    }
+
+    private void FixedUpdate() {
+        float speed = GetTargetSpeed();
+        Vector3 desiredMove = transform.forward;
+
+        // get a normal for the surface that is being touched to move along it
+        RaycastHit hitInfo;
+        Physics.SphereCast(transform.position, m_CharacterController.radius, Vector3.down, out hitInfo,
+                           m_CharacterController.height / 2f, groundLayer, QueryTriggerInteraction.Ignore);
+
+
+        //Edge Grinding Issue Fix
+        //Debug.Log(Vector3.Dot(Vector3.up, hitInfo.normal));
+        if(Vector3.Dot(Vector3.up, hitInfo.normal) > 0.1f) {
+            desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
+        }
+
+        m_MoveDir.x = desiredMove.x * speed;
+        m_MoveDir.z = desiredMove.z * speed;
+
+
+        Ray ray = new Ray(transform.position + transform.up * -0.7f + 0.4f * transform.forward, -transform.up * 2f);
+        Debug.DrawRay(ray.origin, ray.direction, Color.red);
+        bool customGrounded = Physics.Raycast(ray, 0.4f, groundLayer);
+
+        if(m_CharacterController.isGrounded && customGrounded) {
+
+            if(customGrounded) {
+                m_MoveDir.y = -m_StickToGroundForce;
+            }
+
+
+            /*if(m_Jump) {
+                m_MoveDir.y = m_JumpSpeed;
+                PlayJumpSound();
+                m_Jump = false;
+                m_Jumping = true;
+            }*/
+        } else {
+            m_MoveDir += Physics.gravity * m_GravityMultiplier * Time.fixedDeltaTime;
+        }
+        
+        m_CollisionFlags = m_CharacterController.Move(m_MoveDir * Time.fixedDeltaTime);
+
+        //using two raycasts, try to align the body to the ground
+        RaycastHit hit;
+        if(Physics.Raycast(m_body.position + m_body.up * -0.5f + 0.1f * m_body.forward, -m_body.up, out hit, 0.8f, groundLayer)) {
+            Vector3 normal1 = hit.normal;
+            if(Physics.Raycast(m_body.position + m_body.up * -0.5f - 0.1f * m_body.forward, -m_body.up, out hit, 0.8f, groundLayer)) {
+                Vector3 normal2 = hit.normal;
+                if(Vector3.Dot(normal1, normal2) > 0.3f) {
+                    Vector3 avgNormal = (normal1 + normal2).normalized;
+
+                    Quaternion rotation = Quaternion.LookRotation(desiredMove, avgNormal);
+                    m_body.rotation = Quaternion.Lerp(m_body.rotation, rotation, Time.deltaTime * 5f);
+                }
+            }
+        }
+
+    }
+
+
+    /*private void PlayJumpSound() {
+        m_AudioSource.clip = m_JumpSound;
+        m_AudioSource.Play();
+    }*/
+
+    private void RotateView() {
+        Quaternion Rotation = Quaternion.AngleAxis(m_SteerInput.Steering, Vector3.up);
+        transform.rotation *= Rotation;
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit) {
+        Rigidbody body = hit.collider.attachedRigidbody;
+
+        if((obstacleLayer.value & 1 << hit.gameObject.layer) != 0) {
+            PlaySound(m_CollisionSounds[++m_CollisionSounds_Counter % m_CollisionSounds.Count], m_CollisionSoundVolume);
+            GameManager.Instance.Death();
+        }
+
+
+        //dont move the rigidbody if the character is on top of it
+        if(m_CollisionFlags == CollisionFlags.Below) {
+            return;
+        }
+
+        if(body == null || body.isKinematic) {
+            return;
+        }
+        body.AddForceAtPosition(m_CharacterController.velocity * 0.1f, hit.point, ForceMode.Impulse);
+    }
+}
+

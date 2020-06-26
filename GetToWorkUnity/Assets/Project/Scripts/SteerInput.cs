@@ -31,10 +31,25 @@ public class SteerInput : MonoBehaviour {
     [HideInInspector] public bool leftGrabbed { get; private set; } = false;
     [HideInInspector] public bool rightGrabbed { get; private set; } = false;
 
+    [Header("Steam VR")]
     public SteamVR_Action_Single brakeAction;
     public SteamVR_Input_Sources brakeSource;
     public SteamVR_Action_Single boostAction;
     public SteamVR_Input_Sources boostSource;
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip m_boostSound;
+    [SerializeField] private float m_boostSoundVolume;
+    [SerializeField] private AudioClip m_brakeSound;
+    [SerializeField] private float m_brakeSoundVolume;
+    private AudioSource m_AudioSource;
+
+    private void Awake() {
+        m_AudioSource = GetComponent<AudioSource>();
+        if(m_AudioSource == null) {
+            m_AudioSource = gameObject.AddComponent<AudioSource>();
+        }
+    }
 
 
     void Update() {
@@ -50,6 +65,9 @@ public class SteerInput : MonoBehaviour {
         //boost = Mathf.Lerp(boost, 0,0.1f);
 
         thruster = GameManager.Instance.started ? 1 : 0;
+
+        // boost audio
+        m_AudioSource.volume = Mathf.Lerp(m_AudioSource.volume, boost , 0.1f);
     }
 
     void OnEnable() {
@@ -61,12 +79,15 @@ public class SteerInput : MonoBehaviour {
     private void Brake(SteamVR_Action_Single fromAction, SteamVR_Input_Sources fromSource, float newAxis, float newDelta) {
         if(leftGrabbed) {
             brake = newAxis;
+            m_AudioSource.PlayOneShot(m_brakeSound,m_brakeSoundVolume);
         }
     }
 
     private void Accellerate(SteamVR_Action_Single fromAction, SteamVR_Input_Sources fromSource, float newAxis, float newDelta) {
         if(rightGrabbed) {
             boost = newAxis;
+            m_AudioSource.clip = m_boostSound;
+            m_AudioSource.Play();
         }
     }
 
