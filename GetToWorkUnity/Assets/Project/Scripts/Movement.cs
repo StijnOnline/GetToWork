@@ -66,8 +66,8 @@ public class Movement : MonoBehaviour {
             m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
         }*/
 
-        if(!m_PreviouslyGrounded && m_CharacterController.isGrounded) {
-            PlaySound(m_LandSounds[++m_LandSound_Counter % m_LandSounds.Count], m_LandSoundVolume);
+        if (!m_PreviouslyGrounded && m_CharacterController.isGrounded) {
+            PlaySound(m_LandSounds[Random.Range(0, m_LandSounds.Count)], m_LandSoundVolume);
             //m_MoveDir.y = 0f;
             m_Jumping = false;
         }
@@ -168,7 +168,7 @@ public class Movement : MonoBehaviour {
         Rigidbody body = hit.collider.attachedRigidbody;
 
         if((obstacleLayer.value & 1 << hit.gameObject.layer) != 0) {
-            PlaySound(m_CollisionSounds[++m_CollisionSounds_Counter % m_CollisionSounds.Count], m_CollisionSoundVolume);
+            PlaySound(m_CollisionSounds[Random.Range(0, m_CollisionSounds.Count)], m_CollisionSoundVolume);
             GameManager.Instance.Death();
         }
 

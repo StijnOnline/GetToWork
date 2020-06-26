@@ -17,14 +17,14 @@ public class PC_INPUT : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Return))
             GameManager.Instance.StartGame();
-        Input_Hor = Input.GetAxis("Horizontal");
+       
 
         Input_Brake = Input.GetKey(KeyCode.Space);
         Input_Boost = Input.GetKey(KeyCode.LeftShift) ;
     }
 
     void FixedUpdate() {
-
+        Input_Hor = Input.GetAxis("Horizontal");
         steer.rotation *= Quaternion.Euler(PC_STEERSPEED * Input_Hor, 0, 0);
 
         steerInput.SetBrake(Input_Brake ? 1f : 0f);

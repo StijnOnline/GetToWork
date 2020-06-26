@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour {
     public void Death() {
         //GameData.Instance.playerObject.SetParent(null);
         player.parent = null;
-        //movementScript.enabled = false;
+        movementScript.enabled = false;
         //bikeRB.useGravity = true;
 
         Invoke("Restart", 2f);

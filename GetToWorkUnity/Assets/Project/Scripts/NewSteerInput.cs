@@ -29,7 +29,25 @@ public class NewSteerInput : MonoBehaviour {
     public SteamVR_Input_Sources brakeSource;
     public SteamVR_Action_Single boostAction;
     public SteamVR_Input_Sources boostSource;
-    
+
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip m_boostSound;
+    [SerializeField] private float m_boostSoundVolume;
+    [SerializeField] private AudioClip m_brakeSound;
+    [SerializeField] private float m_brakeSoundVolume;
+    private AudioSource m_AudioSource;
+
+
+
+    private void Awake()
+    {
+        m_AudioSource = GetComponent<AudioSource>();
+        if (m_AudioSource == null)
+        {
+            m_AudioSource = gameObject.AddComponent<AudioSource>();
+        }
+    }
 
 
     void Update() {
@@ -41,6 +59,9 @@ public class NewSteerInput : MonoBehaviour {
         if(leftGrabbed && rightGrabbed) {
             GameManager.Instance.StartGame();
         }
+
+        // boost audio
+        m_AudioSource.volume = Mathf.Lerp(m_AudioSource.volume, boost, 0.1f);
     }
 
     void OnEnable() {
@@ -52,12 +73,16 @@ public class NewSteerInput : MonoBehaviour {
     private void Brake(SteamVR_Action_Single fromAction, SteamVR_Input_Sources fromSource, float newAxis, float newDelta) {
         if(leftGrabbed) {
             brake = newAxis;
+            m_AudioSource.PlayOneShot(m_brakeSound, m_brakeSoundVolume);
         }
+      
     }
 
     private void Accellerate(SteamVR_Action_Single fromAction, SteamVR_Input_Sources fromSource, float newAxis, float newDelta) {
         if(rightGrabbed) {
             boost = newAxis;
+            m_AudioSource.clip = m_boostSound;
+            m_AudioSource.Play();
         }
     }
 
@@ -70,8 +95,15 @@ public class NewSteerInput : MonoBehaviour {
 
     public void SetBrake(float brake) {
         this.brake = brake;
+        m_AudioSource.PlayOneShot(m_brakeSound, m_brakeSoundVolume);
     }
     public void SetBoost(float boost) {
         this.boost = boost;
+
+        if (!m_AudioSource.isPlaying)
+        {
+            m_AudioSource.clip = m_boostSound;
+            m_AudioSource.Play();
+        }
     }
 }

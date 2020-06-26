@@ -11,15 +11,16 @@ public class TriggerEnterEvent : UnityEvent<Collider> { }
 public class CollisionEnterEvent : UnityEvent<Collision> { }
 
 public class TriggerEvent : MonoBehaviour {
-    public bool checkLayer;
-    public int requireLayer;
-    public bool checkTag;
-    public string requireTag;
+
+    [HideInInspector] public bool checkLayer;
+    [HideInInspector] public int requireLayer;
+    [HideInInspector] public bool checkTag;
+    [HideInInspector] public string requireTag;
     public TriggerEnterEvent onTriggerEnterEvent = new TriggerEnterEvent();
     public CollisionEnterEvent onCollisionEnterEvent = new CollisionEnterEvent();
 
     void OnTriggerEnter(Collider other) {
-        if(checkLayer && (requireLayer & 1 << other.gameObject.layer) == 0)
+        if (checkLayer && (other.gameObject.layer != requireLayer))
             return;
         if(checkTag && !other.gameObject.CompareTag(requireTag))
             return;
@@ -27,7 +28,7 @@ public class TriggerEvent : MonoBehaviour {
     }
 
     private void OnCollisionEnter(Collision collision) {
-        if(checkLayer && (requireLayer & 1 << collision.gameObject.layer) == 0)
+        if(checkLayer && (collision.gameObject.layer != requireLayer))
             return;
         if(checkTag && !collision.gameObject.CompareTag(requireTag))
             return;
@@ -56,11 +57,8 @@ public class TriggerEventEditor : Editor {
         }
         EditorGUILayout.EndHorizontal();
 
-        SerializedProperty onTriggerEnterEventProperty = serializedObject.FindProperty("onTriggerEnterEvent"); // <-- UnityEvent
-        EditorGUILayout.PropertyField(onTriggerEnterEventProperty);
-        
-        SerializedProperty onCollisionEnterEventProperty = serializedObject.FindProperty("onCollisionEnterEvent"); // <-- UnityEvent
-        EditorGUILayout.PropertyField(onCollisionEnterEventProperty);
+        base.OnInspectorGUI();
+
 
     }
 }
