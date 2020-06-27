@@ -136,7 +136,7 @@ public class Movement : MonoBehaviour {
         
         m_CollisionFlags = m_CharacterController.Move(m_MoveDir * Time.fixedDeltaTime);
 
-        //using two raycasts, try to align the body to the ground
+        /*//using two raycasts, try to align the body to the ground
         RaycastHit hit;
         Debug.DrawRay(m_body.position + m_body.up * -0.5f + 0.4f * m_body.forward, -m_body.up);
         if(Physics.Raycast(m_body.position + m_body.up * -0.5f + 0.4f * m_body.forward, -m_body.up, out hit, 1.3f, groundLayer)) {
@@ -151,7 +151,11 @@ public class Movement : MonoBehaviour {
                     m_body.rotation = Quaternion.Lerp(m_body.rotation, rotation, Time.deltaTime * 5f);
                 }
             }
-        }
+        }*/
+
+        //use grounded normal
+        Quaternion rotation = Quaternion.LookRotation(desiredMove, hitInfo.normal);
+        m_body.rotation = Quaternion.Lerp(m_body.rotation, rotation, Time.deltaTime * 5f);
 
     }
 
