@@ -138,9 +138,11 @@ public class Movement : MonoBehaviour {
 
         //using two raycasts, try to align the body to the ground
         RaycastHit hit;
-        if(Physics.Raycast(m_body.position + m_body.up * -0.5f + 0.1f * m_body.forward, -m_body.up, out hit, 0.8f, groundLayer)) {
+        Debug.DrawRay(m_body.position + m_body.up * -0.5f + 0.4f * m_body.forward, -m_body.up);
+        if(Physics.Raycast(m_body.position + m_body.up * -0.5f + 0.4f * m_body.forward, -m_body.up, out hit, 1.3f, groundLayer)) {
             Vector3 normal1 = hit.normal;
-            if(Physics.Raycast(m_body.position + m_body.up * -0.5f - 0.1f * m_body.forward, -m_body.up, out hit, 0.8f, groundLayer)) {
+        Debug.DrawRay(m_body.position + m_body.up * -0.5f + -0.4f * m_body.forward, -m_body.up);
+            if(Physics.Raycast(m_body.position + m_body.up * -0.5f - 0.4f * m_body.forward, -m_body.up, out hit, 1.3f, groundLayer)) {
                 Vector3 normal2 = hit.normal;
                 if(Vector3.Dot(normal1, normal2) > 0.3f) {
                     Vector3 avgNormal = (normal1 + normal2).normalized;
