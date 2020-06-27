@@ -157,7 +157,7 @@ public class Movement : MonoBehaviour {
         if(Physics.Raycast(transform.position, -transform.up, out hit, 1.5f, groundLayer)) {
                 Quaternion rotation = Quaternion.LookRotation(desiredMove, hit.normal);
                 m_body.rotation = Quaternion.Lerp(m_body.rotation, rotation, Time.deltaTime * 5f);
-            }
+            
         }
 
     }
