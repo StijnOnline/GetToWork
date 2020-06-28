@@ -1,7 +1,6 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.UIElements;
+
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -37,6 +36,8 @@ public class TriggerEvent : MonoBehaviour {
 }
 
 #if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.UIElements;
 
     [CustomEditor(typeof(TriggerEvent))]
     [CanEditMultipleObjects]
