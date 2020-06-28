@@ -36,6 +36,11 @@ namespace Valve.VR
             SteamVR_Events.Fade.Send(newColor, duration, fadeOverlay);
         }
 
+        public void StartStart()
+        {
+            SteamVR_Events.Fade.Send(Color.black, 1f, false);
+        }
+
         static public void View(Color newColor, float duration)
         {
             var compositor = OpenVR.Compositor;

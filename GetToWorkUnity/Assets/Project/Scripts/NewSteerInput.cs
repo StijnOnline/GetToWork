@@ -71,7 +71,7 @@ public class NewSteerInput : MonoBehaviour {
     }
 
     private void Brake(SteamVR_Action_Single fromAction, SteamVR_Input_Sources fromSource, float newAxis, float newDelta) {
-        if(leftGrabbed) {
+        if(leftGrabbed && GameManager.Instance.started) {
             brake = newAxis;
             m_AudioSource.PlayOneShot(m_brakeSound, m_brakeSoundVolume);
         }
@@ -79,10 +79,14 @@ public class NewSteerInput : MonoBehaviour {
     }
 
     private void Accellerate(SteamVR_Action_Single fromAction, SteamVR_Input_Sources fromSource, float newAxis, float newDelta) {
-        if(rightGrabbed) {
+        if(rightGrabbed && GameManager.Instance.started) {
             boost = newAxis;
-            m_AudioSource.clip = m_boostSound;
-            m_AudioSource.Play();
+            if (m_boostSound != null)
+            {
+                m_AudioSource.clip = m_boostSound;
+                m_AudioSource.Play();
+            }
+           
         }
     }
 

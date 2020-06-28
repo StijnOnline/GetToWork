@@ -95,6 +95,8 @@ public class GameManager : MonoBehaviour {
 
     //when player dies or falls
     public void Death() {
+        if (!started) return;
+        started = false; 
         //GameData.Instance.playerObject.SetParent(null);
         player.parent = null;
         movementScript.enabled = false;
@@ -122,9 +124,16 @@ public class GameManager : MonoBehaviour {
         steerInput.ResetSteer();*/
 
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        Destroy(bikeRB.gameObject);
-        Destroy(player.gameObject);
+        //Debug.LogError("weeewew");
+        if (bikeRB.gameObject != null)
+        {
+            DestroyImmediate(bikeRB.gameObject);
+        }
+        if (player.gameObject != null)
+        {
 
+            DestroyImmediate(player.gameObject);
+        }
         SteamVR_LoadLevel.Begin(SceneManager.GetActiveScene().name);
         Debug.Log("Restarted");
     }
