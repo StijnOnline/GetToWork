@@ -36,29 +36,33 @@ public class TriggerEvent : MonoBehaviour {
     }
 }
 
-[CustomEditor(typeof(TriggerEvent))]
-[CanEditMultipleObjects]
-public class TriggerEventEditor : Editor {
+#if UNITY_EDITOR
 
-    public override void OnInspectorGUI() {
-        TriggerEvent Script = (TriggerEvent)target;
+    [CustomEditor(typeof(TriggerEvent))]
+    [CanEditMultipleObjects]
+    public class TriggerEventEditor : Editor {
 
-        EditorGUILayout.BeginHorizontal();
-        Script.checkLayer = EditorGUILayout.Toggle("Check Layer", Script.checkLayer);
-        if(Script.checkLayer) {
-            Script.requireLayer = EditorGUILayout.LayerField("Require Layer", Script.requireLayer);
+        public override void OnInspectorGUI() {
+            TriggerEvent Script = (TriggerEvent)target;
+
+            EditorGUILayout.BeginHorizontal();
+            Script.checkLayer = EditorGUILayout.Toggle("Check Layer", Script.checkLayer);
+            if(Script.checkLayer) {
+                Script.requireLayer = EditorGUILayout.LayerField("Require Layer", Script.requireLayer);
+            }
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            Script.checkTag = EditorGUILayout.Toggle("Check Tag", Script.checkTag);
+            if(Script.checkTag) {
+                Script.requireTag = EditorGUILayout.TextField("Require Tag", Script.requireTag);
+            }
+            EditorGUILayout.EndHorizontal();
+
+            base.OnInspectorGUI();
+
+
         }
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.BeginHorizontal();
-        Script.checkTag = EditorGUILayout.Toggle("Check Tag", Script.checkTag);
-        if(Script.checkTag) {
-            Script.requireTag = EditorGUILayout.TextField("Require Tag", Script.requireTag);
-        }
-        EditorGUILayout.EndHorizontal();
-
-        base.OnInspectorGUI();
-
-
     }
-}
+
+#endif
