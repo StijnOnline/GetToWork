@@ -39,8 +39,6 @@ public class TriggerEvent : MonoBehaviour {
 }
 
 #if UNITY_EDITOR
-using UnityEditor;
-using UnityEditor.UIElements;
 
     [CustomEditor(typeof(TriggerEvent))]
     [CanEditMultipleObjects]
